@@ -101,15 +101,23 @@ class Repository(object):
                 repo = None
 
             # Now we need the Auditor
-            try:
-                auditor = audit.Auditor(*repo_data.get('audits', []))
-            except KeyError as ex:
-                # Log a warning
-                ctxt.warn("Couldn't load audit %s for repository %s "
-                          "(from %s); using defaults" % (ex, name, path))
+            audit_sources = [
+                (path, repo_data.get('audits')),
+                ('command line', ctxt.get('audits')),
+                ('default', []),
+            ]
+            for src, audits in audit_sources:  # pragma: no branch
+                if audits is None:
+                    continue
 
-                # Use the default auditor
-                auditor = audit.Auditor()
+                try:
+                    auditor = audit.Auditor(*audits)
+                except KeyError as ex:
+                    # Log a warning
+                    ctxt.warn("Couldn't load audit %s for repository %s "
+                              "(from %s); using defaults" % (ex, name, src))
+                else:
+                    break
 
             # Construct the Repository
             repos[name] = cls(name, repo, auditor,

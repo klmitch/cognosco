@@ -111,8 +111,9 @@ class RepositoryTest(unittest.TestCase):
             mock.call('username'),
             mock.call('password'),
             mock.call('url', 'https://api.github.com'),
+            mock.call('audits'),
         ])
-        self.assertEqual(ctxt.get.call_count, 3)
+        self.assertEqual(ctxt.get.call_count, 4)
         gh_handle.get_repo.assert_called_once_with('repo')
         mock_Auditor.assert_called_once_with()
         self.assertFalse(ctxt.warn.called)
@@ -170,14 +171,17 @@ class RepositoryTest(unittest.TestCase):
             mock.call('username'),
             mock.call('password'),
             mock.call('url', 'https://api.github.com'),
+            mock.call('audits'),
             mock.call('username'),
             mock.call('password'),
             mock.call('url', 'https://api.github.com'),
+            mock.call('audits'),
             mock.call('username'),
             mock.call('password'),
             mock.call('url', 'https://api.github.com'),
+            mock.call('audits'),
         ])
-        self.assertEqual(ctxt.get.call_count, 9)
+        self.assertEqual(ctxt.get.call_count, 12)
         gh_handle.get_repo.assert_has_calls([
             mock.call('repo1'),
             mock.call('repo2'),
@@ -286,8 +290,9 @@ class RepositoryTest(unittest.TestCase):
             mock.call('username'),
             mock.call('password'),
             mock.call('url', 'https://api.github.com'),
+            mock.call('audits'),
         ])
-        self.assertEqual(ctxt.get.call_count, 3)
+        self.assertEqual(ctxt.get.call_count, 4)
         gh_handle.get_repo.assert_called_once_with('repo')
         mock_Auditor.assert_called_once_with()
         self.assertFalse(ctxt.warn.called)
@@ -329,8 +334,9 @@ class RepositoryTest(unittest.TestCase):
             mock.call('username'),
             mock.call('password'),
             mock.call('url', 'https://api.github.com'),
+            mock.call('audits'),
         ])
-        self.assertEqual(ctxt.get.call_count, 3)
+        self.assertEqual(ctxt.get.call_count, 4)
         gh_handle.get_repo.assert_called_once_with('org/repo')
         mock_Auditor.assert_called_once_with()
         self.assertFalse(ctxt.warn.called)
@@ -373,8 +379,9 @@ class RepositoryTest(unittest.TestCase):
             mock.call('username'),
             mock.call('password'),
             mock.call('url', 'https://api.github.com'),
+            mock.call('audits'),
         ])
-        self.assertEqual(ctxt.get.call_count, 3)
+        self.assertEqual(ctxt.get.call_count, 4)
         gh_handle.get_repo.assert_called_once_with('repo')
         mock_Auditor.assert_called_once_with()
         ctxt.warn.assert_called_once_with(
@@ -417,8 +424,9 @@ class RepositoryTest(unittest.TestCase):
             mock.call('username'),
             mock.call('password'),
             mock.call('url', 'https://api.github.com'),
+            mock.call('audits'),
         ])
-        self.assertEqual(ctxt.get.call_count, 3)
+        self.assertEqual(ctxt.get.call_count, 4)
         gh_handle.get_repo.assert_called_once_with('repo')
         mock_Auditor.assert_called_once_with('a', 'b', 'c')
         self.assertFalse(ctxt.warn.called)
@@ -439,7 +447,9 @@ class RepositoryTest(unittest.TestCase):
         filemock = mock.MagicMock()
         filemock.__enter__.return_value = filemock
         mock_open.return_value = filemock
-        ctxt_data = {}
+        ctxt_data = {
+            'audits': ['x', 'y', 'z'],
+        }
         ctxt = mock.Mock(**{
             'get.side_effect': lambda x, y=None: ctxt_data.get(x, y),
         })
@@ -462,12 +472,13 @@ class RepositoryTest(unittest.TestCase):
             mock.call('username'),
             mock.call('password'),
             mock.call('url', 'https://api.github.com'),
+            mock.call('audits'),
         ])
-        self.assertEqual(ctxt.get.call_count, 3)
+        self.assertEqual(ctxt.get.call_count, 4)
         gh_handle.get_repo.assert_called_once_with('repo')
         mock_Auditor.assert_has_calls([
             mock.call('a', 'b', 'c'),
-            mock.call(),
+            mock.call('x', 'y', 'z'),
         ])
         self.assertEqual(mock_Auditor.call_count, 2)
         ctxt.warn.assert_called_once_with(
@@ -511,8 +522,9 @@ class RepositoryTest(unittest.TestCase):
             mock.call('username'),
             mock.call('password'),
             mock.call('url', 'https://api.github.com'),
+            mock.call('audits'),
         ])
-        self.assertEqual(ctxt.get.call_count, 3)
+        self.assertEqual(ctxt.get.call_count, 4)
         gh_handle.get_repo.assert_called_once_with('repo')
         mock_Auditor.assert_called_once_with()
         self.assertFalse(ctxt.warn.called)

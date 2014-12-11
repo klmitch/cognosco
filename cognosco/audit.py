@@ -177,6 +177,16 @@ class Auditor(object):
         # Return the audit callables
         return callables
 
+    @classmethod
+    def defaults(cls):
+        """
+        Retrieve a sorted list of all the audits configured by default.
+
+        :returns: A sorted list of audits.
+        """
+
+        return sorted(cls._get_all_audit().keys())
+
     def __new__(cls, *audits):
         """
         Construct a new ``Auditor`` instance.

@@ -93,7 +93,7 @@ class AuditFailureTest(unittest.TestCase):
 
 
 class AuditorTest(unittest.TestCase):
-    @mock.patch.dict(audit.Auditor._cache, name='result')
+    @mock.patch.dict(audit.Auditor._cache, clear=True, name='result')
     @mock.patch.object(pkg_resources, 'iter_entry_points', return_value=[])
     def test_get_audit_cached(self, mock_iter_entry_points):
         result = audit.Auditor._get_audit('name')
@@ -102,7 +102,7 @@ class AuditorTest(unittest.TestCase):
         self.assertEqual(audit.Auditor._cache, {'name': 'result'})
         self.assertFalse(mock_iter_entry_points.called)
 
-    @mock.patch.dict(audit.Auditor._cache)
+    @mock.patch.dict(audit.Auditor._cache, clear=True)
     @mock.patch.object(pkg_resources, 'iter_entry_points', return_value=[])
     def test_get_audit_from_ep(self, mock_iter_entry_points):
         ep = mock.Mock(**{'load.return_value': 'result'})
@@ -114,7 +114,7 @@ class AuditorTest(unittest.TestCase):
         ep.load.assert_called_once_with()
         self.assertFalse(mock_iter_entry_points.called)
 
-    @mock.patch.dict(audit.Auditor._cache)
+    @mock.patch.dict(audit.Auditor._cache, clear=True)
     @mock.patch.object(pkg_resources, 'iter_entry_points', return_value=[])
     def test_get_audit_none(self, mock_iter_entry_points):
         result = audit.Auditor._get_audit('name')
@@ -124,7 +124,7 @@ class AuditorTest(unittest.TestCase):
         mock_iter_entry_points.assert_called_once_with(
             'cognosco.audits', 'name')
 
-    @mock.patch.dict(audit.Auditor._cache)
+    @mock.patch.dict(audit.Auditor._cache, clear=True)
     @mock.patch.object(pkg_resources, 'iter_entry_points', return_value=[
         mock.Mock(**{'load.side_effect': ImportError()}),
         mock.Mock(**{'load.side_effect': AttributeError()}),
@@ -182,6 +182,13 @@ class AuditorTest(unittest.TestCase):
             mock.call('ep2', mock_iter_entry_points.return_value[5]),
         ])
         self.assertEqual(mock_get_audit.call_count, 5)
+
+    @mock.patch.object(audit.Auditor, '_get_all_audit',
+                       return_value={'ep1': 1, 'ep2': 2})
+    def test_defaults(self, mock_get_all_audit):
+        result = audit.Auditor.defaults()
+
+        self.assertEqual(result, ['ep1', 'ep2'])
 
     @mock.patch.dict(audit.Auditor._auditors, {None: 'cached'})
     @mock.patch.object(audit.Auditor, '_get_audit',

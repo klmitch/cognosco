@@ -14,6 +14,15 @@
 #    governing permissions and limitations under the License.
 
 
+class AuditException(Exception):
+    """
+    An exception raised by ``perform_audit()`` to report duplicate
+    repository specifications.
+    """
+
+    pass
+
+
 class DuplicateRepositoryException(Exception):
     """
     An exception raised if the same repository is defined by multiple

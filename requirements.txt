@@ -5,3 +5,4 @@ PyGithub
 PyYAML
 setuptools
 six
+timestring

@@ -426,11 +426,11 @@ class PerformAuditTest(unittest.TestCase):
     def test_normal_audit(self, mock_format_age, mock_save):
         repo_dict = {
             'repo1': mock.Mock(**{
-                'full_name': 'repo_1',
+                'repo.full_name': 'repo_1',
                 'audit.return_value': [],
             }),
             'repo2': mock.Mock(**{
-                'full_name': 'repo_2',
+                'repo.full_name': 'repo_2',
                 'audit.return_value': [
                     (mock.Mock(**{
                         'number': 5,
@@ -473,7 +473,7 @@ class PerformAuditTest(unittest.TestCase):
                 ],
             }),
             'repo3': mock.Mock(**{
-                'full_name': 'repo_3',
+                'repo.full_name': 'repo_3',
                 'audit.return_value': [
                     (mock.Mock(**{
                         'number': 5,
@@ -571,11 +571,11 @@ class PerformAuditTest(unittest.TestCase):
     def test_since_audit(self, mock_format_age, mock_save):
         repo_dict = {
             'repo1': mock.Mock(**{
-                'full_name': 'repo_1',
+                'repo.full_name': 'repo_1',
                 'audit.return_value': [],
             }),
             'repo2': mock.Mock(**{
-                'full_name': 'repo_2',
+                'repo.full_name': 'repo_2',
                 'audit.return_value': [
                     (mock.Mock(**{
                         'number': 5,
@@ -618,7 +618,7 @@ class PerformAuditTest(unittest.TestCase):
                 ],
             }),
             'repo3': mock.Mock(**{
-                'full_name': 'repo_3',
+                'repo.full_name': 'repo_3',
                 'audit.return_value': [
                     (mock.Mock(**{
                         'number': 5,
@@ -716,11 +716,11 @@ class PerformAuditTest(unittest.TestCase):
     def test_update_audit(self, mock_format_age, mock_save):
         repo_dict = {
             'repo1': mock.Mock(**{
-                'full_name': 'repo_1',
+                'repo.full_name': 'repo_1',
                 'audit.return_value': [],
             }),
             'repo2': mock.Mock(**{
-                'full_name': 'repo_2',
+                'repo.full_name': 'repo_2',
                 'audit.return_value': [
                     (mock.Mock(**{
                         'number': 5,
@@ -763,7 +763,7 @@ class PerformAuditTest(unittest.TestCase):
                 ],
             }),
             'repo3': mock.Mock(**{
-                'full_name': 'repo_3',
+                'repo.full_name': 'repo_3',
                 'audit.return_value': [
                     (mock.Mock(**{
                         'number': 5,

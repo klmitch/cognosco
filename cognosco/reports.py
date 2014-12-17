@@ -430,7 +430,7 @@ def perform_audit(ctxt, repos, since=None, stream=sys.stdout, update=False):
             continue
 
         # Report the audit failures
-        print('%s:' % repo.full_name, file=stream)
+        print('%s:' % repo.repo.full_name, file=stream)
         for pull, fails in sorted(failures, key=lambda x: x[0].number):
             # Keep track of the number of pull requests and failures
             pr_count += 1

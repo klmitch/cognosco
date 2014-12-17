@@ -312,7 +312,7 @@ class TimeAction(argparse.Action):
     default=[],
     help='Select the specific audit rules to run.  May be given more than '
     'once to specify more audit rules.  Defaults to "%s".' %
-    ', '.join(sorted(audit.Auditor.defaults())),
+    '", "'.join(sorted(audit.Auditor.defaults())),
 )
 @cli_tools.argument(
     '--since', '-s',

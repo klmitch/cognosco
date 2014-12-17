@@ -145,6 +145,47 @@ class MakeReposTest(unittest.TestCase):
         ])
         self.assertEqual(mock_Repository.call_count, 3)
 
+    @mock.patch('cognosco.audit.Auditor')
+    @mock.patch('cognosco.github_util.get_handle')
+    @mock.patch('cognosco.repository.Repository',
+                side_effect=lambda x, y, z: x)
+    def test_default_audits(self, mock_Repository, mock_get_handle,
+                            mock_Auditor):
+        ctxt_data = {
+            'username': 'user',
+            'password': 'pass',
+            'url': 'url',
+        }
+        ctxt = mock.Mock(**{
+            'get.side_effect': lambda x, y=None: ctxt_data.get(x, y),
+        })
+        repos = [
+            mock.Mock(full_name='repo1'),
+            mock.Mock(full_name='repo2'),
+            mock.Mock(full_name='repo3'),
+        ]
+        get_repos = mock.Mock(return_value=repos)
+
+        result = reports._make_repos(ctxt, 'name', get_repos)
+
+        self.assertEqual(result, ['repo1', 'repo2', 'repo3'])
+        ctxt.get.assert_has_calls([
+            mock.call('username'),
+            mock.call('password'),
+            mock.call('url'),
+            mock.call('audits'),
+        ])
+        self.assertEqual(ctxt.get.call_count, 4)
+        mock_get_handle.assert_called_once_with('user', 'pass', 'url')
+        mock_Auditor.assert_called_once_with()
+        self.assertFalse(ctxt.warn.called)
+        mock_Repository.assert_has_calls([
+            mock.call('repo1', repos[0], mock_Auditor.return_value),
+            mock.call('repo2', repos[1], mock_Auditor.return_value),
+            mock.call('repo3', repos[2], mock_Auditor.return_value),
+        ])
+        self.assertEqual(mock_Repository.call_count, 3)
+
     @mock.patch('cognosco.audit.Auditor',
                 side_effect=[KeyError('audit2'), 'auditor'])
     @mock.patch('cognosco.github_util.get_handle')

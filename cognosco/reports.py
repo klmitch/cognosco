@@ -140,6 +140,9 @@ def _make_repos(ctxt, name, get_repos):
         ('default', []),
     ]
     for src, audits in audit_sources:  # pragma: no branch
+        if audits is None:
+            continue
+
         try:
             auditor = audit.Auditor(*audits)
         except KeyError as ex:

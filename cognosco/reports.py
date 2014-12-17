@@ -237,7 +237,7 @@ class TimeAction(argparse.Action):
 @cli_tools.argument_group(
     'auth',
     title='Authentication-related Options',
-    desription='Options used to authenticate to Github.',
+    description='Options used to authenticate to Github.',
 )
 @cli_tools.argument(
     '--username', '-u',

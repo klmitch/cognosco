@@ -461,7 +461,7 @@ def perform_audit(ctxt, repos, since=None, stream=sys.stdout, update=False):
                       file=stream)
 
             # Emit a trailing empty line to offset subsequent audits
-            print(file=stream)
+            print(u'', file=stream)
 
     # Emit the final summary statistics
     end = datetime.datetime.utcnow()

@@ -24,6 +24,7 @@ import textwrap
 
 import cli_tools
 import github
+import six
 import timestring
 
 from cognosco import audit
@@ -454,8 +455,9 @@ def perform_audit(ctxt, repos, since=None, stream=sys.stdout, update=False):
 
             # Output the actual failures
             for fail in sorted(fails, key=lambda x: x.audit):
-                print(textwrap.fill(str(fail), initial_indent='      - ',
-                                    subsequent_indent='        '),
+                print(textwrap.fill(six.text_type(fail),
+                                    initial_indent=u'      - ',
+                                    subsequent_indent=u'        '),
                       file=stream)
 
             # Emit a trailing empty line to offset subsequent audits
